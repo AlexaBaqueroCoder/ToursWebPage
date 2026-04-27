@@ -1,0 +1,38 @@
+{
+  "name": "cartagena-tours",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^9.0.0",
+    "@mui/lab": "^9.0.0-beta.2",
+    "@mui/material": "^9.0.0",
+    "@mui/material-nextjs": "^9.0.0",
+    "@netlify/plugin-nextjs": "^5.15.9",
+    "firebase": "^12.12.0",
+    "framer-motion": "^12.38.0",
+    "next": "16.2.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-intersection-observer": "^10.0.3",
+    "swiper": "^12.1.3",
+    "yet-another-react-lightbox": "^3.30.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.3",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
