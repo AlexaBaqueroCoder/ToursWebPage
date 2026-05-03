@@ -23,7 +23,6 @@ export default function TestimonialsSection() {
   const { ref, controls } = useScrollAnimation();
   const { t } = useLanguage();
   const theme = useTheme();
-
   return (
     <Box
       sx={{
@@ -54,6 +53,7 @@ export default function TestimonialsSection() {
             <Typography variant="h2" sx={{ mb: 2, fontSize: { xs: '2rem', md: '3rem' } }}>
               {t('testimonials.title')}
             </Typography>
+            <Typography sx={{ mb: 2, fontWeight: 700, color: 'primary.main' }}>500+ clientes felices</Typography>
             <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 500, mx: 'auto' }}>
               {t('testimonials.subtitle')}
             </Typography>
@@ -122,6 +122,7 @@ export default function TestimonialsSection() {
             ))}
           </Grid>
         </motion.div>
+
       </Container>
     </Box>
   );

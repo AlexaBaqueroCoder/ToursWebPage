@@ -29,6 +29,12 @@ import { Experience, localizeExperience } from '@/data/experiences';
 import { useLanguage, tourWhatsAppMessage } from '@/contexts/LanguageContext';
 import { whatsappUrl } from '@/lib/siteConfig';
 
+import BeachAccess from '@mui/icons-material/BeachAccess';
+import DirectionsBoat from '@mui/icons-material/DirectionsBoat';
+import LocalBar from '@mui/icons-material/LocalBar';
+import CameraAlt from '@mui/icons-material/CameraAlt';
+import Star from '@mui/icons-material/Star';
+
 interface ExperienceCardProps {
   experience: Experience;
   index: number;
@@ -47,6 +53,63 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
+  };
+
+  const getHighlightEmoji = (text: string) => {
+    const t = text.toLowerCase();
+  
+    // 🍾 Bebidas / bar
+    if (t.includes('champagne') || t.includes('open bar') || t.includes('bebida')) return '🍾';
+    if (t.includes('open bar doble') || t.includes('happy Hour 2x1')) return '🍸';
+    if (t.includes('cholon')) return '🎉';
+    if (t.includes('coctel')) return '🍹';
+    
+    // 🏄 Actividades acuáticas
+    if (t.includes('paddle')) return '🏄‍♂️';
+    if (t.includes('inmersion') || t.includes('buceo')) return '🤿';
+    if (t.includes('arrecife') || t.includes('coral') || t.includes('snorkel')) return '🐠';
+
+    // ✈️ Avioneta sumergible
+    if (t.includes('avioneta') || t.includes('sumergible')) return '✈️';
+    // 🐬 Oceanario
+    if (t.includes('oceanario') || t.includes('delfin') || t.includes('acuatico')) return '🐬';
+
+    // 🦜 Aviario
+    if (t.includes('aviario') || t.includes('aves') || t.includes('pajaros')) return '🦜';
+
+    //🍽️ Alimentacion
+    if (t.includes('almuerzo')) return '🍽️';
+    if (t.includes('almuerzo tipico')) return '🍤';
+
+    // 🌴 Playa / mar
+    if (t.includes('isla') || t.includes('playa')) return '🏝️';
+    if (t.includes('piscina')) return '🏊‍♂️';
+    if (t.includes('recorrido panoramico')) return '🏖️';
+
+  
+    // 🚤 Transporte
+    if (t.includes('lancha') || t.includes('bote')) return '🚤';
+  
+    // 📸 Experiencia
+    if (t.includes('foto') || t.includes('instagram')) return '📸';
+    
+    //Luxury
+    if (t.includes('luxury')) return '✨';
+
+    // 🎵 Entretenimiento
+    if (t.includes('dj')) return '🎧';
+    if (t.includes('saxofon')) return '🎷';
+  
+    // 🐾 Mascotas
+    if (t.includes('pet') || t.includes('mascota')) return '🐾';
+  
+    // 🧑‍💼 Servicios
+    if (t.includes('host') || t.includes('bilingue') || t.includes('acompanante turistico')) return '🧑‍💼';
+  
+    // 🏅 Certificaciones
+    if (t.includes('padi') || t.includes('certified')) return '🏅';
+  
+    return '✨';
   };
 
   const waText = tourWhatsAppMessage(locale, experience.title);
@@ -176,16 +239,18 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
             </Box>
 
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.8, mb: 2, minHeight: 0 }}>
-              {experience.highlights.slice(0, 4).map((h, i) => (
+              {experience.highlights.slice(0, 6).map((h, i) => (
                 <Chip
                   key={i}
-                  label={h}
+                  label={`${getHighlightEmoji(h)} ${h}`}
                   size="small"
-                  variant="outlined"
                   sx={{
-                    fontSize: '0.72rem',
-                    borderColor:
-                      theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)',
+                    fontSize: '0.75rem',
+                    fontWeight: 500,
+                    backgroundColor: '#f5f5f5',
+                    color: '#555',
+                    border: '1px solid #eee',
+                    borderRadius: '999px',
                   }}
                 />
               ))}
@@ -205,19 +270,19 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
               {experience.description}
             </Typography>
 
-            <Box sx={{ mt: 'auto', pt: 2.5 }}>
-              <Button variant="outlined" color="primary" fullWidth onClick={() => setOpen(true)} sx={{ mb: 1.5 }}>
+            <Box sx={{ mt: 'auto', pt: 2.5, display: 'flex', gap: 1.5, }}>
+              <Button variant="outlined" color="primary" onClick={() => setOpen(true)}  sx={{flex: 1, maxWidth: '160px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
                 {t('card.viewDetails')}
               </Button>
 
               <Button
                 variant="contained"
                 color="primary"
-                fullWidth
                 startIcon={<WhatsApp />}
                 href={waHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                sx={{ flex: 1 }}
               >
                 {t('card.bookWhatsapp')}
               </Button>
@@ -247,14 +312,10 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
           },
         }}
       >
-        <DialogTitle
-          sx={{
-            pr: 6,
-            fontFamily: 'var(--font-playfair), "Playfair Display", Georgia, serif',
-            fontWeight: 700,
-          }}
-        >
-          {experience.title}
+        <DialogTitle sx={{ pr: 6,  textAlign: 'center', fontWeight: 700,}}>
+          <Typography variant="h5" sx={{ fontWeight: 700 }}>
+            {experience.title}
+          </Typography>
           <IconButton
             aria-label={t('modal.close')}
             onClick={() => setOpen(false)}
@@ -351,7 +412,7 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
 
           <Divider sx={{ my: 2 }} />
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 2 }}>
             <Gavel sx={{ fontSize: 20, color: 'secondary.main' }} />
             <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
               {t('modal.cancellation')}
@@ -361,18 +422,32 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
             {cancellationText}
           </Typography>
 
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            startIcon={<WhatsApp />}
-            href={waHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{ mt: 3 }}
-          >
-            {t('card.bookWhatsapp')}
+          <Box sx={{ mt: 2 }} /> {/* espacio en blanco */}
+
+          <Box sx={{ mt: 2 }} /> {/* espacio en blanco */}
+
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<WhatsApp />}
+              href={waHref}
+              target="_blank"
+              rel="noopener noreferrer"
+           >
+              {t('card.bookWhatsappDetail')}
           </Button>
+
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setOpen(false)}
+          >
+            {t('modal.close')}
+          </Button>
+        </Box>
+
+          <Box sx={{ mt: 2 }} /> {/* espacio en blanco */}
         </DialogContent>
       </Dialog>
     </>

@@ -16,8 +16,34 @@ export interface Experience {
   cancellationPolicy?: string;
   tag?: string;
   locales?: {
-    en?: Partial<Pick<Experience, 'title' | 'subtitle' | 'description' | 'highlights' | 'tag'>>;
-    fr?: Partial<Pick<Experience, 'title' | 'subtitle' | 'description' | 'highlights' | 'tag'>>;
+    en?: Partial<
+      Pick<
+        Experience,
+        | 'title'
+        | 'subtitle'
+        | 'description'
+        | 'highlights'
+        | 'tag'
+        | 'includes'
+        | 'notIncludes'
+        | 'departure'
+        | 'returnTime'
+      >
+    >;
+    fr?: Partial<
+      Pick<
+        Experience,
+        | 'title'
+        | 'subtitle'
+        | 'description'
+        | 'highlights'
+        | 'tag'
+        | 'includes'
+        | 'notIncludes'
+        | 'departure'
+        | 'returnTime'
+      >
+    >;
   };
 }
 
@@ -102,7 +128,7 @@ export const experiences: Experience[] = [
     subtitle: 'Para quienes quieren vivirlo todo sin prisa',
     description:
       'La experiencia definitiva: Fuerte de Bocachica, Islas del Rosario, snorkel en Majayura, fiesta en Cholon, avioneta de Pablo Escobar, Agua Azul, sunset en Playa Tranquila y plancton bioluminiscente.',
-    image: '/images/caribetours/tour-rosario-5.jpg',
+    image: '/images/caribetours/tour_5_islas.png',
     category: 'island-tour',
     departure: '7:30 AM - 8:00 AM',
     returnTime: '3:30 PM - 8:00 PM',

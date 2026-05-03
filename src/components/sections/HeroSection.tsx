@@ -10,11 +10,34 @@ import { whatsappUrl } from '@/lib/siteConfig';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { stats as headerStats, localizeStat } from '@/data/experiences';
 
-export default function HeroSection() {
+type HeroSlide = { city: string; image: string };
+
+interface HeroSectionProps {
+  slides?: HeroSlide[];
+  /** CSS selector for the tours block to scroll to (default #experiences). */
+  toursSectionSelector?: string;
+}
+
+const homeHeroSlides: HeroSlide[] = [
+  { city: 'Cartagena', image: '/images/hero/hero_cartagena.jpg' },
+  { city: 'Bogota', image: '/images/hero/hero_bogota.png' },
+  { city: 'Medellin', image: '/images/hero/hero_medellin.png' },
+];
+
+export default function HeroSection({ slides, toursSectionSelector = '#experiences' }: HeroSectionProps) {
   const { t, locale } = useLanguage();
   const localizedHeaderStats = headerStats.map((s) => localizeStat(s, locale));
+  const heroSlides = slides ?? homeHeroSlides;
+  const [activeSlide, setActiveSlide] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = window.setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 4800);
+    return () => window.clearInterval(interval);
+  }, [heroSlides.length]);
   const scrollToTours = () => {
-    const el = document.querySelector('#rosario');
+    const el = document.querySelector(toursSectionSelector);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -46,15 +69,27 @@ export default function HeroSection() {
           zIndex: 0,
         }}
       >
-        <Image
-          src="/images/caribetours/hero.jpg"
-          alt="Cartagena Luxury Tours — Islas del Rosario"
-          fill
-          style={{ objectFit: 'cover', objectPosition: 'center center' }}
-          priority
-          quality={88}
-          sizes="100vw"
-        />
+        {heroSlides.map((slide, index) => (
+          <Box
+            key={slide.city}
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              opacity: activeSlide === index ? 1 : 0,
+              transition: 'opacity 900ms ease',
+            }}
+          >
+            <Image
+              src={slide.image}
+              alt={`Paisaje de ${slide.city}`}
+              fill
+              style={{ objectFit: 'cover', objectPosition: 'center center' }}
+              priority={index === 0}
+              quality={88}
+              sizes="100vw"
+            />
+          </Box>
+        ))}
         <Box
           sx={{
             position: 'absolute',
@@ -130,7 +165,7 @@ export default function HeroSection() {
                   textShadow: '0 1px 4px rgba(0,0,0,0.5)',
                 }}
               >
-                {t('hero.location')}
+                Cartagena · Bogota · Medellin
               </Typography>
             </Box>
 
@@ -172,34 +207,9 @@ export default function HeroSection() {
                   color: '#FFFFFF',
                   fontSize: { xs: '1.65rem', sm: '2.25rem', md: '2.65rem', lg: '2.85rem' },
                   textShadow: '0 1px 3px rgba(0,0,0,0.45)',
-                  whiteSpace: { sm: 'nowrap' },
                 }}
               >
-                {t('hero.headline.start')}{' '}
-              </Box>
-              <Box
-                component="span"
-                sx={{
-                  color: '#e8c547',
-                  fontSize: { xs: '1.65rem', sm: '2.25rem', md: '2.65rem', lg: '2.85rem' },
-                  fontStyle: 'italic',
-                  fontWeight: 500,
-                  textShadow: '0 1px 2px rgba(0,0,0,0.35)',
-                  whiteSpace: { sm: 'nowrap' },
-                }}
-              >
-                {t('hero.headline.mid')}{' '}
-              </Box>
-              <Box
-                component="span"
-                sx={{
-                  color: '#FFFFFF',
-                  fontSize: { xs: '1.65rem', sm: '2.25rem', md: '2.65rem', lg: '2.85rem' },
-                  textShadow: '0 1px 3px rgba(0,0,0,0.45)',
-                  whiteSpace: { sm: 'nowrap' },
-                }}
-              >
-                {t('hero.headline.end')}
+                Descubre Colombia como nunca antes
               </Box>
             </Typography>
           </motion.div>
@@ -221,7 +231,7 @@ export default function HeroSection() {
                 textShadow: '0 1px 2px rgba(0,0,0,0.35)',
               }}
             >
-              {t('hero.subtitle')}
+              Cartagena, Bogota y Medellin en una misma experiencia premium.
             </Typography>
           </motion.div>
 
@@ -347,6 +357,37 @@ export default function HeroSection() {
           </motion.div>
         </Box>
       </Container>
+
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: { xs: 90, md: 104 },
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 2,
+          display: 'flex',
+          gap: 1,
+        }}
+      >
+        {heroSlides.map((slide, index) => (
+          <Box
+            key={slide.city}
+            component="button"
+            onClick={() => setActiveSlide(index)}
+            aria-label={`Ver ${slide.city}`}
+            sx={{
+              width: activeSlide === index ? 28 : 10,
+              height: 10,
+              borderRadius: 999,
+              border: 'none',
+              background: activeSlide === index ? '#e8c547' : 'rgba(255,255,255,0.45)',
+              transition: 'all 240ms ease',
+              cursor: 'pointer',
+              p: 0,
+            }}
+          />
+        ))}
+      </Box>
 
       {/* Indicador SCROLL — animación tipo caribetours.lovable.app */}
       <Box

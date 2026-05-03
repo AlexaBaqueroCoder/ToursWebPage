@@ -51,6 +51,18 @@
   }
 }
 
+/* Tour detail modal — overlay on hero image (matches premium tour UI) */
+.gradient-card {
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.35) 38%,
+    rgba(0, 0, 0, 0.08) 65%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+}
+
 /* Image hover effect on cards */
 .card-image {
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;

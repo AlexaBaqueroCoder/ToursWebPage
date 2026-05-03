@@ -43,10 +43,11 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { labelKey: 'nav.all', href: '/#rosario' },
-  { labelKey: 'nav.traditional', href: '/#traditional' },
-  { labelKey: 'nav.toursRosario', href: '/#rosario' },
-  { labelKey: 'nav.luxury', href: '/#luxury' },
+  { labelKey: 'nav.home', href: '/' },
+  { labelKey: 'nav.cartagena', href: '/cartagena' },
+  { labelKey: 'nav.bogota', href: '/bogota' },
+  { labelKey: 'nav.medellin', href: '/medellin' },
+  { labelKey: 'nav.contact', href: '/contacto' },
 ];
 
 export default function Navbar() {
@@ -109,14 +110,14 @@ export default function Navbar() {
         : 'rgba(255,255,255,0.14)';
 
   const navLinkSx = {
-    color: navMuted,
-    fontSize: { lg: '0.8125rem', xl: '0.875rem' },
-    fontWeight: 600,
-    letterSpacing: '0.06em',
-    textTransform: 'uppercase',
+    color: scrolled ? 'rgba(217, 202, 170, 0.86)' : 'rgba(245, 231, 201, 0.86)',
+    fontSize: '0.875rem',
+    fontWeight: 500,
+    letterSpacing: '0.01em',
+    textTransform: 'none',
     fontFamily: 'var(--font-urbanist), "Urbanist", sans-serif',
-    px: { lg: 0.85, xl: 1.1 },
-    py: { lg: 1.1 },
+    px: 2,
+    py: 1,
     minWidth: 0,
     borderRadius: 2,
     lineHeight: 1.2,
@@ -127,9 +128,7 @@ export default function Navbar() {
           textShadow: '0 1px 2px rgba(0,0,0,0.55)',
         }
       : {}),
-    '&:hover': {
-      background: navHoverBg,
-    },
+    '&:hover': { color: '#e8c547', background: navHoverBg },
   } as const;
 
   return (

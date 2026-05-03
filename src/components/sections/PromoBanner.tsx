@@ -1,15 +1,23 @@
 'use client';
 
 import React from 'react';
-import { Box, Container, Typography, Button, Chip, Paper, useTheme } from '@mui/material';
-import Groups from '@mui/icons-material/Groups';
-import Nightlife from '@mui/icons-material/Nightlife';
-import Restaurant from '@mui/icons-material/Restaurant';
+import { Box, Container, Typography, Fab, useTheme } from '@mui/material';
 import LocalOffer from '@mui/icons-material/LocalOffer';
 import WhatsApp from '@mui/icons-material/WhatsApp';
+import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { whatsappUrl } from '@/lib/siteConfig';
+
+const quickOffers = [
+  'Descuento grupos 4+',
+  'Cortesias en discotecas',
+  'Beneficios en restaurantes',
+  'Asesoria premium',
+];
+
+const benefitEmoji = ['👥', '🎓', '🍽️'];
 
 export default function PromoBanner() {
   const theme = useTheme();
@@ -22,34 +30,29 @@ export default function PromoBanner() {
         ? 'Bonjour ! Je souhaite des informations sur les réductions groupe (4+ personnes), les courtoisies discothèques et restaurants.'
         : 'Hola! Quiero información sobre descuentos para grupos (4+ personas), cortesías en discotecas y restaurantes.';
 
-  const benefitCardSx = {
-    display: 'flex',
-    gap: 1.5,
-    alignItems: 'flex-start',
+  const waHref = whatsappUrl(promoMsg);
+
+  const glassCardSx = {
     p: 2,
-    borderRadius: 2,
+    borderRadius: 3,
     border: '1px solid',
-    borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(15,107,111,0.12)',
+    borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.65)',
     background:
-      theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.65)',
-    backdropFilter: 'blur(8px)',
+      theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.82)',
+    backdropFilter: 'blur(12px)',
+    boxShadow: theme.palette.mode === 'dark' ? '0 8px 32px rgba(0,0,0,0.35)' : '0 12px 40px rgba(15, 22, 40, 0.12)',
   } as const;
+
+  const benefitCopies = [t('promo.discountGlass1'), t('promo.discountGlass2'), t('promo.discountGlass3')];
 
   return (
     <Box
       component="section"
       aria-label={t('promo.title')}
       sx={{
-        pt: { xs: 4, sm: 5, md: 6 },
-        pb: { xs: 4, sm: 5, md: 6 },
-        px: { xs: 0, sm: 0 },
-        background:
-          theme.palette.mode === 'dark'
-            ? 'linear-gradient(180deg, #12161C 0%, #161c24 100%)'
-            : 'linear-gradient(180deg, #EDE9E2 0%, #F3F1EC 50%, #EDE9E2 100%)',
-        borderBottom: '1px solid',
-        borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(30,38,48,0.08)',
-        position: 'relative',
+        pt: { xs: 3, md: 5 },
+        pb: { xs: 4, md: 6 },
+        px: { xs: 1.5, sm: 2 },
       }}
     >
       <Container maxWidth="lg">
@@ -58,125 +61,194 @@ export default function PromoBanner() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.45 }}
+          style={{ width: '100%' }}
         >
-          <Paper
-            elevation={0}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+            style={{ width: '100%' }}
+          >
+          <Box
             sx={{
               position: 'relative',
+              borderRadius: { xs: '18px', md: '22px' },
               overflow: 'hidden',
-              borderRadius: { xs: 3, md: 4 },
-              p: { xs: 2.5, sm: 3, md: 4 },
+              minHeight: { xs: 520, md: 460 },
               border: '1px solid',
-              borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(15,107,111,0.14)',
-              background:
-                theme.palette.mode === 'dark'
-                  ? 'linear-gradient(145deg, rgba(26,32,40,0.95) 0%, rgba(18,22,28,0.98) 100%)'
-                  : 'linear-gradient(145deg, #FDFCF9 0%, #F5F2EB 100%)',
+              borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(15, 22, 40, 0.12)',
               boxShadow:
                 theme.palette.mode === 'dark'
-                  ? '0 4px 24px rgba(0,0,0,0.25)'
-                  : '0 8px 40px rgba(30,38,48,0.08)',
+                  ? '0 24px 60px rgba(0,0,0,0.45)'
+                  : '0 22px 56px rgba(30, 38, 48, 0.14)',
             }}
           >
-            <Box
-              sx={{
-                position: 'absolute',
-                top: -40,
-                right: -40,
-                width: 180,
-                height: 180,
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(196,154,74,0.2) 0%, transparent 70%)',
-                pointerEvents: 'none',
-              }}
-            />
-
-            <Box sx={{ position: 'relative', zIndex: 1 }}>
-              <Chip
-                icon={<LocalOffer sx={{ fontSize: '18px !important' }} />}
-                label={t('promo.badge')}
+            <Box sx={{ position: 'absolute', inset: 0 }}>
+              <Image
+                src="/images/caribetours/hero.jpg"
+                alt="Cartagena vista aérea, mar y ciudad"
+                fill
+                sizes="(max-width: 900px) 100vw, 1080px"
+                priority={false}
+                style={{ objectFit: 'cover', objectPosition: 'center 35%' }}
+              />
+              <Box
                 sx={{
-                  mb: 2,
-                  fontWeight: 800,
-                  letterSpacing: '0.12em',
-                  fontSize: '0.65rem',
-                  height: 28,
-                  background: 'rgba(196, 154, 74, 0.2)',
-                  color: theme.palette.mode === 'dark' ? '#F5E6C8' : '#5C4510',
-                  border: '1px solid rgba(196, 154, 74, 0.4)',
+                  position: 'absolute',
+                  inset: 0,
+                  background:
+                    'linear-gradient(165deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.38) 42%, rgba(0,0,0,0.55) 100%)',
                 }}
               />
+            </Box>
 
-              <Typography
-                variant="h4"
-                component="h2"
-                sx={{
-                  fontFamily: 'var(--font-playfair), "Playfair Display", Georgia, serif',
-                  fontWeight: 700,
-                  fontSize: { xs: '1.45rem', sm: '1.65rem', md: '1.9rem' },
-                  lineHeight: 1.3,
-                  mb: 3,
-                  color: theme.palette.mode === 'dark' ? '#F8FAFC' : '#1E2630',
-                  maxWidth: 720,
-                }}
+            <Fab
+              component={Link}
+              href={waHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('promo.cta')}
+              sx={{
+                position: 'absolute',
+                bottom: { xs: 18, md: 26 },
+                right: { xs: 18, md: 26 },
+                zIndex: 4,
+                bgcolor: '#25D366',
+                color: '#fff',
+                width: 58,
+                height: 58,
+                boxShadow: '0 0 0 0 rgba(37, 211, 102, 0.55)',
+                animation: 'promoWaPulse 2.6s ease-in-out infinite',
+                '@keyframes promoWaPulse': {
+                  '0%, 100%': { boxShadow: '0 0 0 0 rgba(37, 211, 102, 0.45)', transform: 'scale(1)' },
+                  '50%': { boxShadow: '0 0 24px 8px rgba(37, 211, 102, 0.35)', transform: 'scale(1)' },
+                },
+                '&:hover': {
+                  bgcolor: '#20bd5a',
+                  transform: 'scale(1.1)',
+                  boxShadow: '0 12px 28px rgba(37, 211, 102, 0.55)',
+                },
+              }}
+            >
+              <WhatsApp sx={{ fontSize: 30 }} />
+            </Fab>
+
+            <Box
+              sx={{
+                position: 'relative',
+                zIndex: 2,
+                p: { xs: 2.5, sm: 3.5, md: 4 },
+                display: 'flex',
+                flexDirection: 'column',
+                gap: { xs: 2, md: 2.5 },
+                minHeight: { xs: 520, md: 460 },
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                <LocalOffer sx={{ color: '#f5e6a8', fontSize: 22 }} />
+                <Typography
+                  component="span"
+                  sx={{
+                    fontWeight: 800,
+                    letterSpacing: '0.14em',
+                    fontSize: '0.65rem',
+                    color: 'rgba(255,255,255,0.92)',
+                  }}
+                >
+                  {t('promo.badge')}
+                </Typography>
+              </Box>
+
+              <motion.div
+                initial={{ opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
-                {t('promo.title')}
-              </Typography>
+                <Typography
+                  variant="h4"
+                  component="h2"
+                  sx={{
+                    fontFamily: 'var(--font-playfair), "Playfair Display", Georgia, serif',
+                    fontWeight: 700,
+                    fontSize: { xs: '1.65rem', sm: '1.95rem', md: '2.25rem' },
+                    lineHeight: 1.25,
+                    color: '#fff',
+                    textAlign: 'center',
+                    textShadow: '0 4px 28px rgba(0,0,0,0.45)',
+                    maxWidth: 720,
+                    mx: 'auto',
+                  }}
+                >
+                  {t('promo.title')}
+                </Typography>
+              </motion.div>
+
+              <Box sx={{ overflow: 'hidden', borderRadius: 2, opacity: 0.95 }}>
+                <motion.div
+                  animate={{ x: ['0%', '-50%'] }}
+                  transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
+                  style={{ display: 'flex', gap: 12, width: 'max-content' }}
+                >
+                  {[...quickOffers, ...quickOffers].map((item, idx) => (
+                    <Box
+                      key={`${item}-${idx}`}
+                      sx={{
+                        px: 1.75,
+                        py: 0.75,
+                        borderRadius: 999,
+                        fontWeight: 700,
+                        fontSize: '0.75rem',
+                        whiteSpace: 'nowrap',
+                        background: 'rgba(255,255,255,0.14)',
+                        color: '#fff',
+                        border: '1px solid rgba(255,255,255,0.28)',
+                      }}
+                    >
+                      {item}
+                    </Box>
+                  ))}
+                </motion.div>
+              </Box>
 
               <Box
                 sx={{
                   display: 'grid',
-                  gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
-                  gap: 2,
-                  mb: 3,
+                  gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+                  gap: { xs: 1.5, md: 2 },
+                  mt: { xs: 0.5, md: 1 },
                 }}
               >
-                <Box sx={benefitCardSx}>
-                  <Groups sx={{ color: 'secondary.main', flexShrink: 0, fontSize: 26, mt: 0.25 }} />
-                  <Typography variant="body2" sx={{ lineHeight: 1.65, color: 'text.primary' }}>
-                    {t('promo.groups')}
-                  </Typography>
-                </Box>
-                <Box sx={benefitCardSx}>
-                  <Nightlife sx={{ color: 'secondary.main', flexShrink: 0, fontSize: 26, mt: 0.25 }} />
-                  <Typography variant="body2" sx={{ lineHeight: 1.65, color: 'text.primary' }}>
-                    {t('promo.clubs')}
-                  </Typography>
-                </Box>
-                <Box sx={{ ...benefitCardSx, gridColumn: { xs: '1', md: '1 / -1' } }}>
-                  <Restaurant sx={{ color: 'secondary.main', flexShrink: 0, fontSize: 26, mt: 0.25 }} />
-                  <Typography variant="body2" sx={{ lineHeight: 1.65, color: 'text.primary' }}>
-                    {t('promo.restaurants')}
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box sx={{ display: 'flex', justifyContent: { xs: 'stretch', sm: 'center', md: 'flex-start' } }}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="large"
-                  startIcon={<WhatsApp />}
-                  href={whatsappUrl(promoMsg)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{
-                    py: 1.75,
-                    px: 4,
-                    fontWeight: 700,
-                    fontSize: '0.95rem',
-                    borderRadius: 3,
-                    minHeight: 52,
-                    boxShadow: '0 6px 24px rgba(196, 154, 74, 0.35)',
-                    width: { xs: '100%', sm: 'auto' },
-                    maxWidth: { sm: 360 },
-                  }}
-                >
-                  {t('promo.cta')}
-                </Button>
+                {benefitCopies.map((copy, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 + i * 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <Box sx={glassCardSx}>
+                      <Box sx={{ display: 'flex', gap: 1.25, alignItems: 'flex-start' }}>
+                        <Typography component="span" sx={{ fontSize: '1.45rem', lineHeight: 1.15, flexShrink: 0 }}>
+                          {benefitEmoji[i]}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            lineHeight: 1.65,
+                            color: theme.palette.mode === 'dark' ? 'rgba(248,250,252,0.94)' : '#1e2630',
+                            fontWeight: 500,
+                          }}
+                        >
+                          {copy}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </motion.div>
+                ))}
               </Box>
             </Box>
-          </Paper>
+          </Box>
+          </motion.div>
         </motion.div>
       </Container>
     </Box>

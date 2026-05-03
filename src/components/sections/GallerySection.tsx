@@ -1,32 +1,56 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Box, Container, Typography, Chip, ImageList, ImageListItem } from '@mui/material';
+import React from 'react';
+import { Box, Container, Typography, Chip } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useScrollAnimation, fadeInUp } from '@/hooks/useScrollAnimation';
-import Image from 'next/image';
-import Lightbox from 'yet-another-react-lightbox';
-import 'yet-another-react-lightbox/styles.css';
 import { useLanguage } from '@/contexts/LanguageContext';
+import HeroCarousel, { type CarouselSlide } from '@/components/ui/HeroCarousel';
 
-const images = [
-  { src: '/images/gallery/gallery1.png', title: 'Beach Club Paraiso' },
-  { src: '/images/hero/beach-club.png', title: 'Islas del Rosario' },
-  { src: '/images/gallery/gallery2.jpeg', title: 'Islas Aereas' },
-  { src: '/images/experiences/snorkel.jpeg', title: 'Snorkel' },
-  { src: '/images/gallery/gallery3.png', title: 'Mundo Submarino' },
-  { src: '/images/hero/terrace.png', title: 'Terraza Caribena' },
-  { src: '/images/gallery/gallery4.jpeg', title: 'Atardecer Caribe' },
-  { src: '/images/gallery/gallery5.jpeg', title: 'Estrella de Mar' },
-  { src: '/images/diving/underwater.png', title: 'Buceo Profundo' },
-  { src: '/images/gallery/gallery6.jpeg', title: 'Arrecife Coral' },
-  { src: '/images/hero/resort.png', title: 'Delfin Caribeno' },
-  { src: '/images/beach-clubs/paue.png', title: 'Capri Beach Club' },
-];
+type GalleryCity = 'home' | 'cartagena' | 'bogota' | 'medellin';
 
-export default function GallerySection() {
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
+const galleryByCity: Record<GalleryCity, CarouselSlide[]> = {
+  home: [
+    {
+      id: 'h1',
+      title: 'Momento inolvidable en Cartagena',
+      description: 'Imagenes que se deslizan automaticamente',
+      image: '/images/gallery/gallery_cartagena (1).jpg',
+      ctaHref: '/cartagena',
+    },
+    {
+      id: 'h2',
+      title: 'Escenas del Caribe colombiano',
+      description: 'Experiencias reales de viajeros',
+      image: '/images/gallery/gallery_cartagena (2).jpg',
+      ctaHref: '/cartagena',
+    },
+    {
+      id: 'h3',
+      title: 'Aventura en Medellin y Guatape',
+      description: 'Paisajes y energia de la ciudad',
+      image: '/images/gallery/gallery_medellin1.png',
+      ctaHref: '/medellin',
+    },
+  ],
+  cartagena: [
+    { id: 'c1', title: 'Isla Grande premium', description: 'Dia de playa, relax y experiencias luxury', image: '/images/caribetours/tour-rosario-5.jpg', ctaHref: '/cartagena' },
+    { id: 'c2', title: 'Familias sobre yates', description: 'Navegacion privada y atardeceres inolvidables', image: '/images/caribetours/tour-yacht.jpg', ctaHref: '/cartagena' },
+    { id: 'c3', title: 'Fiesta en Cholon', description: 'Personas disfrutando musica y mar turquesa', image: '/images/caribetours/tour-rosario-4.jpg', ctaHref: '/cartagena' },
+  ],
+  bogota: [
+    { id: 'b1', title: 'Monserrate panoramico', description: 'Vista de la ciudad y recorrido guiado', image: '/images/caribetours/tour-bogota.jpg', ctaHref: '/bogota' },
+    { id: 'b2', title: 'Candelaria historica', description: 'Arte, color y cultura en cada calle', image: '/images/caribetours/tour-bogota-city.jpg', ctaHref: '/bogota' },
+    { id: 'b3', title: 'Noche de salsa', description: 'Personas bailando y disfrutando Bogota nocturna', image: '/images/caribetours/tour-bogota.jpg', ctaHref: '/bogota' },
+  ],
+  medellin: [
+    { id: 'm1', title: 'Guatape inolvidable', description: 'Color, cultura y pueblos encantadores', image: '/images/caribetours/tour-medellin.jpg', ctaHref: '/medellin' },
+    { id: 'm2', title: 'Deportes en el Penol', description: 'Aventura acuatica con vista de embalse', image: '/images/caribetours/tour-medellin.jpg', ctaHref: '/medellin' },
+    { id: 'm3', title: 'Vista desde el Penol', description: 'Panoramica unica de Antioquia', image: '/images/caribetours/tour-medellin.jpg', ctaHref: '/medellin' },
+  ],
+};
+
+export default function GallerySection({ city = 'cartagena' }: { city?: GalleryCity }) {
   const { ref, controls } = useScrollAnimation();
   const { t } = useLanguage();
 
@@ -60,73 +84,8 @@ export default function GallerySection() {
           </Box>
         </motion.div>
 
-        <ImageList
-          variant="masonry"
-          cols={3}
-          gap={16}
-          sx={{
-            columnCount: { xs: '2 !important', sm: '2 !important', md: '3 !important' },
-          }}
-        >
-          {images.map((img, i) => (
-            <ImageListItem key={i}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08, duration: 0.5 }}
-                whileHover={{ scale: 1.02 }}
-                onClick={() => {
-                  setLightboxIndex(i);
-                  setLightboxOpen(true);
-                }}
-                style={{ cursor: 'pointer' }}
-              >
-                <Box
-                  sx={{
-                    borderRadius: 3,
-                    overflow: 'hidden',
-                    position: 'relative',
-                    aspectRatio: i % 3 === 0 ? '3/4' : i % 3 === 1 ? '4/3' : '1/1',
-                    '&:hover .overlay': { opacity: 1 },
-                  }}
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                  />
-                  <Box
-                    className="overlay"
-                    sx={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'rgba(13, 115, 119, 0.4)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      opacity: 0,
-                      transition: 'opacity 0.3s',
-                    }}
-                  >
-                    <Typography variant="subtitle2" sx={{ color: '#fff', fontWeight: 600 }}>
-                      {img.title}
-                    </Typography>
-                  </Box>
-                </Box>
-              </motion.div>
-            </ImageListItem>
-          ))}
-        </ImageList>
+        <HeroCarousel slides={galleryByCity[city]} autoplayDelay={3800} minHeight={{ xs: '42vh', md: '58vh' }} />
       </Container>
-
-      <Lightbox
-        open={lightboxOpen}
-        close={() => setLightboxOpen(false)}
-        index={lightboxIndex}
-        slides={images.map((img) => ({ src: img.src }))}
-      />
     </Box>
   );
 }

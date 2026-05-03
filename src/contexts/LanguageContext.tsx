@@ -30,6 +30,9 @@ const DICT: Record<Locale, Messages> = {
     'nav.privateServicesShort': 'Servicios exclusivos',
     'nav.faq': 'FAQ',
     'nav.contact': 'Contacto',
+    'nav.cartagena': 'Cartagena',
+    'nav.bogota': 'Bogotá',
+    'nav.medellin': 'Medellin',
     'nav.book': 'Reservar ahora',
     'nav.bookWhatsapp': 'Reservar por WhatsApp',
     'fab.whatsapp': 'Escríbenos por WhatsApp',
@@ -40,15 +43,25 @@ const DICT: Record<Locale, Messages> = {
     'promo.clubs':
       'Al reservar tours: cortesías en las discotecas más famosas de Cartagena, con bebida de cortesía según disponibilidad.',
     'promo.restaurants': 'También cortesías y beneficios en restaurantes aliados.',
+    'promo.discountGlass1':
+      'Grupos de 4 personas en adelante reciben descuentos en todos nuestros tours',
+    'promo.discountGlass2':
+      'Al reservar tours certificados en las direcciones más famosas de Cartagena, obtén beneficios',
+    'promo.discountGlass3': 'También recibirás beneficios en restaurantes aliados',
     'promo.cta': 'Consultar por WhatsApp',
     'card.viewDetails': 'Ver detalles',
-    'card.bookWhatsapp': 'WhatsApp',
+    'card.bookWhatsapp': 'Reservar',
+    'card.bookWhatsappDetail': 'Reservar este tour',
     'modal.close': 'Cerrar',
     'modal.includes': 'Incluye',
     'modal.notIncludes': 'No incluye',
     'modal.cancellation': 'Política de cancelación',
     'modal.highlights': 'Destacados',
     'modal.description': 'Descripción',
+    'modal.scheduleHeading': 'Horario',
+    'modal.departureShort': 'Salida',
+    'modal.returnShort': 'Regreso',
+    'card.reserveThisTour': 'Reservar este tour',
     'private.chip': 'Privados & exclusivos',
     'private.title': 'Otros servicios privados y exclusivos',
     'private.subtitle':
@@ -62,7 +75,7 @@ const DICT: Record<Locale, Messages> = {
     'contactPage.photoAlt': 'Foto de perfil',
     'contactPage.chip': 'TU ANFITRIÓN',
     'contactPage.whatsappCta': 'Escribir por WhatsApp',
-    'contactPage.location': 'Cartagena, Bolívar, Colombia',
+    'contactPage.location': 'Bogotá, Medellín, Cartagena, Colombia',
     'contactPage.bio.p1':
       'Soy tu punto de contacto en Cartagena para organizar tours por las Islas del Rosario, beach clubs, buceo y planes a medida. Trabajo con operadores locales de confianza para que solo te preocupes por disfrutar.',
     'contactPage.bio.p2':
@@ -204,9 +217,10 @@ const DICT: Record<Locale, Messages> = {
     // Footer
     'footer.description':
       'Nos especializamos en crear experiencias autenticas, seguras y memorables para viajeros que desean descubrir Colombia de una forma diferente.',
+    'footer.tours': 'Tours',
     'footer.experiences': 'Experiencias',
-    'footer.beachClubs': 'Beach Clubs',
     'footer.services': 'Servicios',
+    'footer.cities': 'Ciudades',
     'footer.contact': 'Contacto',
     'footer.copyright': 'Todos los derechos reservados.',
     'footer.terms': 'Terminos',
@@ -234,6 +248,9 @@ const DICT: Record<Locale, Messages> = {
     'nav.privateServicesShort': 'Exclusive services',
     'nav.faq': 'FAQ',
     'nav.contact': 'Contact',
+    'nav.cartagena': 'Cartagena',
+    'nav.bogota': 'Bogotá',
+    'nav.medellin': 'Medellin',
     'nav.book': 'Book now',
     'nav.bookWhatsapp': 'Book on WhatsApp',
     'fab.whatsapp': 'Message us on WhatsApp',
@@ -243,6 +260,10 @@ const DICT: Record<Locale, Messages> = {
     'promo.clubs':
       'When you book tours: complimentary perks at Cartagena\u2019s top nightclubs, with a complimentary drink subject to availability.',
     'promo.restaurants': 'Complimentary perks and benefits at partner restaurants too.',
+    'promo.discountGlass1': 'Groups of 4 or more receive discounts on all our tours',
+    'promo.discountGlass2':
+      'Book certified tours at Cartagena\'s most iconic spots and unlock exclusive perks',
+    'promo.discountGlass3': 'Partner restaurants offer extra benefits for our travelers too',
     'promo.cta': 'Ask on WhatsApp',
     'card.viewDetails': 'View details',
     'card.bookWhatsapp': 'WhatsApp',
@@ -252,6 +273,10 @@ const DICT: Record<Locale, Messages> = {
     'modal.cancellation': 'Cancellation policy',
     'modal.highlights': 'Highlights',
     'modal.description': 'Description',
+    'modal.scheduleHeading': 'Schedule',
+    'modal.departureShort': 'Departure',
+    'modal.returnShort': 'Return',
+    'card.reserveThisTour': 'Book this tour',
     'private.chip': 'Private & exclusive',
     'private.title': 'Other private & exclusive services',
     'private.subtitle':
@@ -407,9 +432,10 @@ const DICT: Record<Locale, Messages> = {
     // Footer
     'footer.description':
       'We specialize in creating authentic, safe and memorable experiences for travelers who want to discover Colombia in a different way.',
+    'footer.tours': 'Tours',
     'footer.experiences': 'Experiences',
-    'footer.beachClubs': 'Beach Clubs',
     'footer.services': 'Services',
+    'footer.cities': 'Cities',
     'footer.contact': 'Contact',
     'footer.copyright': 'All rights reserved.',
     'footer.terms': 'Terms',
@@ -437,6 +463,9 @@ const DICT: Record<Locale, Messages> = {
     'nav.privateServicesShort': 'Services exclusifs',
     'nav.faq': 'FAQ',
     'nav.contact': 'Contact',
+    'nav.cartagena': 'Cartagene',
+    'nav.bogota': 'Bogota',
+    'nav.medellin': 'Medellin',
     'nav.book': 'R\u00e9server maintenant',
     'nav.bookWhatsapp': 'R\u00e9server sur WhatsApp',
     'fab.whatsapp': '\u00c9crivez-nous sur WhatsApp',
@@ -447,6 +476,11 @@ const DICT: Record<Locale, Messages> = {
     'promo.clubs':
       'Lors de la r\u00e9servation d\u2019excursions : courtoisies dans les discoth\u00e8ques les plus connues de Carthag\u00e8ne, avec boisson offerte selon disponibilit\u00e9.',
     'promo.restaurants': 'Courtoisies \u00e9galement dans des restaurants partenaires.',
+    'promo.discountGlass1':
+      'Les groupes \u00e0 partir de 4 personnes b\u00e9n\u00e9ficient de r\u00e9ductions sur toutes nos excursions',
+    'promo.discountGlass2':
+      'En r\u00e9servant des excursions certifi\u00e9es dans les lieux incontournables de Carthag\u00e8ne, profitez d\u2019avantages',
+    'promo.discountGlass3': 'Des avantages \u00e9galement chez les restaurants partenaires',
     'promo.cta': 'Demander sur WhatsApp',
     'card.viewDetails': 'Voir les d\u00e9tails',
     'card.bookWhatsapp': 'WhatsApp',
@@ -456,6 +490,10 @@ const DICT: Record<Locale, Messages> = {
     'modal.cancellation': "Politique d'annulation",
     'modal.highlights': 'Points forts',
     'modal.description': 'Description',
+    'modal.scheduleHeading': 'Horaires',
+    'modal.departureShort': 'D\u00e9part',
+    'modal.returnShort': 'Retour',
+    'card.reserveThisTour': 'R\u00e9server cette excursion',
     'private.chip': 'Priv\u00e9s & exclusifs',
     'private.title': 'Autres services priv\u00e9s et exclusifs',
     'private.subtitle':
@@ -611,9 +649,10 @@ const DICT: Record<Locale, Messages> = {
     // Footer
     'footer.description':
       'Nous cr\u00e9ons des exp\u00e9riences authentiques, s\u00fbres et m\u00e9morables pour les voyageurs qui souhaitent d\u00e9couvrir la Colombie autrement.',
+    'footer.tours': 'Tours',
     'footer.experiences': 'Exp\u00e9riences',
-    'footer.beachClubs': 'Beach Clubs',
     'footer.services': 'Services',
+    'footer.cities': 'Villes',
     'footer.contact': 'Contact',
     'footer.copyright': 'Tous droits r\u00e9serv\u00e9s.',
     'footer.terms': 'Conditions',
@@ -680,8 +719,59 @@ export function useLanguage() {
   return ctx;
 }
 
-export function tourWhatsAppMessage(locale: Locale, tourName: string): string {
-  if (locale === 'en') return `Hello, I'm interested in the tour ${tourName}`;
-  if (locale === 'fr') return `Bonjour, je suis int\u00e9ress\u00e9(e) par l'excursion ${tourName}`;
-  return `Hola, me interesa el tour ${tourName}`;
+export function tourWhatsAppMessage(
+  locale: Locale,
+  tourName: string,
+  opts?: { priceFormatted?: string }
+): string {
+  const price = opts?.priceFormatted?.trim() || '—';
+
+  if (locale === 'en') {
+    return `Hello! 👋
+I'd like to know more about this experience in Cartagena 🌴
+
+📍 Experience: ${tourName}
+💰 Price: ${price}
+
+Is it available on this date? 🙌
+
+We'd love to help you plan your experience ✨
+To give you the best service, could you share:
+📅 *Tour date:*
+👥 *Number of people:*
+
+(Feel free to mention any special preferences 😊)`;
+  }
+
+  if (locale === 'fr') {
+    return `Bonjour ! 👋
+Je souhaite en savoir plus sur cette expérience à Carthagène 🌴
+
+📍 Expérience : ${tourName}
+💰 Prix : ${price}
+
+Est-ce disponible à cette date ? 🙌
+
+Ce sera un plaisir de vous aider à organiser votre expérience ✨
+Pour une meilleure prise en charge, pourriez-vous nous indiquer :
+📅 *Date de l'excursion :*
+👥 *Nombre de personnes :*
+
+(Si vous avez une préférence particulière, indiquez-la 😊)`;
+  }
+
+  return `¡Hola! 👋
+Me interesa conocer más sobre esta experiencia en Cartagena 🌴
+
+📍 Experiencia: ${tourName}
+💰 Precio: ${price}
+
+¿Está disponible para esta fecha? 🙌
+
+Será un placer ayudarte a organizar tu experiencia ✨
+ Para brindarte la mejor atención, ¿podrías compartirnos lo siguiente?
+📅 *Fecha del tour:*
+👥 *Número de personas:*
+
+(Si tienes alguna preferencia especial puedes comentarla 😊)`;
 }

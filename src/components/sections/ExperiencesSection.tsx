@@ -26,7 +26,7 @@ export default function ExperiencesSection() {
 
   return (
     <Box
-      id="rosario"
+      id="experiences"
       sx={{
         position: 'relative',
         scrollMarginTop: 96,

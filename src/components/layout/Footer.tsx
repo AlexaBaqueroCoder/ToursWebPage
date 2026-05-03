@@ -29,23 +29,45 @@ export default function Footer() {
   const { t } = useLanguage();
 
   const footerLinks: Record<string, FooterLink[]> = {
-    [t('footer.experiences')]: [
-      { label: 'Experiencia 4 Islas', href: '/#rosario' },
-      { label: 'Experiencia 5 Islas', href: '/#rosario' },
-      { label: 'Playa Tranquila', href: '/#rosario' },
-      { label: 'Playa Blanca', href: '/#rosario' },
-      { label: 'Tour Bahia', href: '/#rosario' },
+    [t('footer.tours')]: [
+      {
+        label: 'Experiencia 4 Islas',
+        href: '/cartagena?section=experiences&tab=rosario',
+      },
+      {
+        label: 'Experiencia 5 Islas',
+        href: '/cartagena?section=experiences&tab=tradicionales',
+      },
+      {
+        label: 'Playa Tranquila',
+        href: '/cartagena?section=experiences&tab=tradicionales',
+      },
+      {
+        label: 'Playa Blanca',
+        href: '/cartagena?section=experiences&tab=tradicionales',
+      },
+      {
+        label: 'Tour Bahia',
+        href: '/cartagena?section=experiences&tab=tradicionales',
+      },
     ],
-    [t('footer.beachClubs')]: [
-      { label: "Pa'ue Beach Lounge", href: '/#luxury' },
-      { label: 'Ibbiza', href: '/#luxury' },
-      { label: 'Capri', href: '/#luxury' },
+    [t('footer.experiences')]: [
+      { label: 'Yates', href: '/cartagena' },
+      { label: 'Helicoptero', href: '/bogota' },
+      { label: 'Guatape', href: '/medellin' },
+      { label: 'Buceo', href: '/cartagena' },
     ],
     [t('footer.services')]: [
-      { label: 'Buceo PADI', href: '/#buceo' },
-      { label: t('nav.accommodation'), href: '/#alojamiento' },
-      { label: t('private.title'), href: '/#servicios-privados' },
-      { label: t('tripBuilder.title'), href: '/#arma-tu-viaje' },
+      { label: t('nav.accommodation'), href: '/cartagena' },
+      { label: 'Transporte privado', href: '/cartagena' },
+      { label: 'Decoracion', href: '/cartagena' },
+      { label: 'Fotografia y video', href: '/cartagena' },
+    ],
+    [t('footer.cities')]: [
+      { label: 'Cartagena', href: '/cartagena' },
+      { label: 'Bogota', href: '/bogota' },
+      { label: 'Medellin', href: '/medellin' },
+      { label: t('nav.contact'), href: '/contacto' },
     ],
   };
 
@@ -77,10 +99,7 @@ export default function Footer() {
                 sx={{
                   fontFamily: '"Playfair Display", serif',
                   fontWeight: 700,
-                  background: 'linear-gradient(135deg, #0a1628, #132a45, #e8c547)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
+                  color: '#e8c547',
                   mb: 2,
                 }}
               >

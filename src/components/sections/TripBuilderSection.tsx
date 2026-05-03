@@ -13,38 +13,49 @@ import {
   Checkbox,
   useTheme,
   Divider,
+  ToggleButton,
+  ToggleButtonGroup,
 } from '@mui/material';
 import WhatsApp from '@mui/icons-material/WhatsApp';
 import ShoppingCart from '@mui/icons-material/ShoppingCart';
 import { motion } from 'framer-motion';
 import { useScrollAnimation, fadeInUp } from '@/hooks/useScrollAnimation';
-import { experiences, beachClubs, divingExperiences, localizeExperience } from '@/data/experiences';
+import { localizeExperience } from '@/data/experiences';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { whatsappUrl } from '@/lib/siteConfig';
+import { CITY_CONFIG, type CitySlug } from '@/data/cities';
 
 interface SelectableExperience {
   id: string;
   title: string;
   priceFrom: number;
   category: string;
+  city: CitySlug;
 }
 
 export default function TripBuilderSection() {
   const [selected, setSelected] = useState<string[]>([]);
+  const [activeCity, setActiveCity] = useState<CitySlug | 'all'>('all');
   const { ref, controls } = useScrollAnimation();
   const theme = useTheme();
   const { t, locale } = useLanguage();
 
-  const allExperiences: SelectableExperience[] = useMemo(() => [
-    ...experiences,
-    ...beachClubs,
-    ...divingExperiences,
-  ]
-    .filter((e) => e.priceFrom)
-    .map((e) => {
-      const loc = localizeExperience(e, locale);
-      return { id: e.id, title: loc.title, priceFrom: e.priceFrom!, category: e.category };
-    }), [locale]);
+  const allExperiences: SelectableExperience[] = useMemo(
+    () =>
+      Object.values(CITY_CONFIG)
+        .flatMap((city) => city.tours.map((tour) => ({ ...tour, city: city.slug })))
+        .filter((e) => e.priceFrom)
+        .map((e) => {
+          const loc = localizeExperience(e, locale);
+          return { id: e.id, title: loc.title, priceFrom: e.priceFrom!, category: e.category, city: e.city };
+        }),
+    [locale]
+  );
+
+  const visibleExperiences = useMemo(
+    () => allExperiences.filter((exp) => activeCity === 'all' || exp.city === activeCity),
+    [activeCity, allExperiences]
+  );
 
   const toggle = (id: string) => {
     setSelected((prev) =>
@@ -125,13 +136,24 @@ export default function TripBuilderSection() {
             <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
               {t('tripBuilder.subtitle')}
             </Typography>
+            <ToggleButtonGroup
+              exclusive
+              value={activeCity}
+              onChange={(_, value) => value && setActiveCity(value)}
+              sx={{ mt: 3, flexWrap: 'wrap', justifyContent: 'center' }}
+            >
+              <ToggleButton value="all">Todas</ToggleButton>
+              <ToggleButton value="cartagena">Cartagena</ToggleButton>
+              <ToggleButton value="bogota">Bogota</ToggleButton>
+              <ToggleButton value="medellin">Medellin</ToggleButton>
+            </ToggleButtonGroup>
           </Box>
         </motion.div>
 
         <Grid container spacing={4}>
           <Grid size={{ xs: 12, md: 8 }}>
             <Grid container spacing={1.5}>
-              {allExperiences.map((exp, i) => (
+              {visibleExperiences.map((exp, i) => (
                 <Grid size={{ xs: 12, sm: 6 }} key={exp.id}>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -179,6 +201,9 @@ export default function TripBuilderSection() {
                         <Box sx={{ flex: 1 }}>
                           <Typography variant="subtitle2" sx={{ fontWeight: 600, fontSize: '0.85rem' }}>
                             {exp.title}
+                          </Typography>
+                          <Typography sx={{ fontSize: '0.72rem', color: 'text.secondary', mt: 0.35 }}>
+                            {exp.city === 'cartagena' ? 'Cartagena' : exp.city === 'bogota' ? 'Bogota' : 'Medellin'}
                           </Typography>
                           <Chip
                             label={getCategoryLabel(exp.category)}
