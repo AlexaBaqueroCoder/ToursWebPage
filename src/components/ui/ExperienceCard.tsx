@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, memo, useMemo, useCallback } from 'react';
 import {
   Card,
   CardContent,
@@ -10,10 +10,10 @@ import {
   Button,
   Dialog,
   DialogContent,
-  DialogTitle,
   IconButton,
   Divider,
   useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import AccessTime from '@mui/icons-material/AccessTime';
 import CheckCircle from '@mui/icons-material/CheckCircle';
@@ -41,79 +41,104 @@ interface ExperienceCardProps {
   cartagenaStyle?: boolean;
 }
 
-export default function ExperienceCard({ experience: rawExperience, index,cartagenaStyle }: ExperienceCardProps) {
+export default memo(function ExperienceCard({ experience: rawExperience, index,cartagenaStyle }: ExperienceCardProps) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { locale, t } = useLanguage();
   const experience = localizeExperience(rawExperience, locale);
 
-  const formatPrice = (price: number) => {
+  const highlightChipSx = {
+    fontSize: '0.75rem',
+    fontWeight: 500,
+    borderRadius: '999px',
+    ...(isDark
+      ? {
+          bgcolor: 'rgba(255,255,255,0.08)',
+          color: 'rgba(255,255,255,0.9)',
+          border: '1px solid rgba(255,255,255,0.14)',
+        }
+      : {
+          bgcolor: '#f5f5f5',
+          color: '#555',
+          border: '1px solid #eee',
+        }),
+  } as const;
+
+  const formatPrice = useCallback((price: number) => {
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
-  };
+  }, []);
 
   const getHighlightEmoji = (text: string) => {
-    const t = text.toLowerCase();
+    const lower = text.toLowerCase();
   
     // 🍾 Bebidas / bar
-    if (t.includes('champagne') || t.includes('open bar') || t.includes('bebida')) return '🍾';
-    if (t.includes('open bar doble') || t.includes('happy Hour 2x1')) return '🍸';
-    if (t.includes('cholon')) return '🎉';
-    if (t.includes('coctel')) return '🍹';
+    if (lower.includes('champagne') || lower.includes('open bar') || lower.includes('bebida')) return '🍾';
+    if (lower.includes('open bar doble') || lower.includes('happy Hour 2x1')) return '🍸';
+    if (lower.includes('cholon')) return '🎉';
+    if (lower.includes('coctel')) return '🍹';
     
     // 🏄 Actividades acuáticas
-    if (t.includes('paddle')) return '🏄‍♂️';
-    if (t.includes('inmersion') || t.includes('buceo')) return '🤿';
-    if (t.includes('arrecife') || t.includes('coral') || t.includes('snorkel')) return '🐠';
+    if (lower.includes('paddle')) return '🏄‍♂️';
+    if (lower.includes('inmersion') || lower.includes('buceo')) return '🤿';
+    if (lower.includes('arrecife') || lower.includes('coral') || lower.includes('snorkel')) return '🐠';
 
     // ✈️ Avioneta sumergible
-    if (t.includes('avioneta') || t.includes('sumergible')) return '✈️';
+    if (lower.includes('avioneta') || lower.includes('sumergible')) return '✈️';
     // 🐬 Oceanario
-    if (t.includes('oceanario') || t.includes('delfin') || t.includes('acuatico')) return '🐬';
+    if (lower.includes('oceanario') || lower.includes('delfin') || lower.includes('acuatico')) return '🐬';
 
     // 🦜 Aviario
-    if (t.includes('aviario') || t.includes('aves') || t.includes('pajaros')) return '🦜';
+    if (lower.includes('aviario') || lower.includes('aves') || lower.includes('pajaros')) return '🦜';
 
     //🍽️ Alimentacion
-    if (t.includes('almuerzo')) return '🍽️';
-    if (t.includes('almuerzo tipico')) return '🍤';
+    if (lower.includes('almuerzo')) return '🍽️';
+    if (lower.includes('almuerzo tipico')) return '🍤';
 
     // 🌴 Playa / mar
-    if (t.includes('isla') || t.includes('playa')) return '🏝️';
-    if (t.includes('piscina')) return '🏊‍♂️';
-    if (t.includes('recorrido panoramico')) return '🏖️';
+    if (lower.includes('isla') || lower.includes('playa')) return '🏝️';
+    if (lower.includes('piscina')) return '🏊‍♂️';
+    if (lower.includes('recorrido panoramico')) return '🏖️';
 
   
     // 🚤 Transporte
-    if (t.includes('lancha') || t.includes('bote')) return '🚤';
+    if (lower.includes('lancha') || lower.includes('bote')) return '🚤';
   
     // 📸 Experiencia
-    if (t.includes('foto') || t.includes('instagram')) return '📸';
+    if (lower.includes('foto') || lower.includes('instagram')) return '📸';
     
     //Luxury
-    if (t.includes('luxury')) return '✨';
+    if (lower.includes('luxury')) return '✨';
 
     // 🎵 Entretenimiento
-    if (t.includes('dj')) return '🎧';
-    if (t.includes('saxofon')) return '🎷';
+    if (lower.includes('dj')) return '🎧';
+    if (lower.includes('saxofon')) return '🎷';
   
     // 🐾 Mascotas
-    if (t.includes('pet') || t.includes('mascota')) return '🐾';
+    if (lower.includes('pet') || lower.includes('mascota')) return '🐾';
   
     // 🧑‍💼 Servicios
-    if (t.includes('host') || t.includes('bilingue') || t.includes('acompanante turistico')) return '🧑‍💼';
+    if (lower.includes('host') || lower.includes('bilingue') || lower.includes('acompanante turistico')) return '🧑‍💼';
   
     // 🏅 Certificaciones
-    if (t.includes('padi') || t.includes('certified')) return '🏅';
+    if (lower.includes('padi') || lower.includes('certified')) return '🏅';
   
     return '✨';
   };
 
-  const waText = tourWhatsAppMessage(locale, experience.title);
+  const waText = useMemo(
+    () =>
+      tourWhatsAppMessage(locale, experience.title, {
+        priceFormatted: experience.priceFrom != null ? formatPrice(experience.priceFrom) : undefined,
+      }),
+    [locale, experience.title, experience.priceFrom, formatPrice],
+  );
   const waHref = whatsappUrl(waText);
 
   const notIncludes = experience.notIncludes ?? [];
@@ -126,7 +151,7 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: index * 0.08, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ delay: Math.min(index * 0.02, 0.1), duration: 0.38, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         <Card
           sx={{
@@ -142,6 +167,8 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
               src={experience.image}
               alt={experience.title}
               fill
+              priority={index < 3}
+              sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{ objectFit: 'cover', transition: 'transform 0.6s ease' }}
               className="card-image"
             />
@@ -245,14 +272,7 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
                   key={i}
                   label={`${getHighlightEmoji(h)} ${h}`}
                   size="small"
-                  sx={{
-                    fontSize: '0.75rem',
-                    fontWeight: 500,
-                    backgroundColor: '#f5f5f5',
-                    color: '#555',
-                    border: '1px solid #eee',
-                    borderRadius: '999px',
-                  }}
+                  sx={highlightChipSx}
                 />
               ))}
             </Box>
@@ -306,22 +326,33 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
         onClose={() => setOpen(false)}
         maxWidth={false}
         fullWidth
+        fullScreen={isMobile}
         slotProps={{
           paper: {
             sx: {
-              borderRadius: 1,
-              width: '60%',
+              borderRadius: { xs: 0, sm: 1 },
+              width: { xs: '100%', sm: '92%', md: '75%' },
               maxWidth: '1200px',
-              overflow: 'hidden', // 👈 importante para el header
+              overflow: 'hidden',
+              maxHeight: { xs: '100dvh', sm: '96vh', md: '92vh' },
+              m: { xs: 0, sm: 'auto' },
+              bgcolor: isDark ? theme.palette.background.paper : '#ffffff',
+              color: isDark ? theme.palette.text.primary : '#1e2630',
             },
           },
         }}
       >
-        <DialogContent 
+        <DialogContent
           sx={{
             p: 0,
+            bgcolor: isDark ? theme.palette.background.paper : '#ffffff',
+            color: isDark ? theme.palette.text.primary : '#1e2630',
+            maxHeight: { xs: '100dvh', sm: '96vh', md: '92vh' },
+            overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehaviorY: 'contain',
             '&.MuiDialogContent-root': {
-            padding: 0, // 👈 🔥 fuerza real
+              padding: 0,
             },
           }}
         >
@@ -340,6 +371,7 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
             src={experience.image}
             alt={experience.title}
             fill
+            sizes="100vw"
             style={{ objectFit: 'cover' }}
           />
 
@@ -359,8 +391,8 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
               bottom: 0,
               left: 0,
               width: '100%',
-              px: 4,      // 👈 padding horizontal
-              pb: 4,    // 👈 padding abajo
+              px: { xs: 2, sm: 4 },
+              pb: { xs: 3, sm: 4 },
               color: '#fff',
               zIndex: 2,
             }}
@@ -379,7 +411,7 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
                {experience.category}
             </Typography>
 
-            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+            <Typography variant="h5" sx={{ fontWeight: 700, fontSize: { xs: '1.15rem', sm: '1.5rem' } }}>
               {experience.title}
             </Typography>
           </Box>
@@ -403,8 +435,8 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
           </IconButton>
 
         </Box>
-        <Box sx={{ p: 2 }}> {/* 👈 🔥 AGREGA ESTE BOX */}
-          <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
+        <Box sx={{ p: { xs: 1.5, sm: 2 }, bgcolor: isDark ? theme.palette.background.paper : '#ffffff' }}>
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 2, alignItems: 'center' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
               <FlightTakeoff sx={{ fontSize: 18, color: 'primary.main' }} />
               <Typography variant="body2" color="text.secondary">
@@ -442,7 +474,7 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
                 sx={{
                   fontSize: '1.4rem',
                   fontWeight: 800,
-                  color: '#0A192F',
+                  color: isDark ? theme.palette.text.primary : '#0A192F',
                   lineHeight: 1.1,
                 }}
               >
@@ -460,6 +492,11 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
               </Typography>
             </Box>
           )}
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.8, mb: 2 }}>
+            {experience.highlights.slice(0, 6).map((h, i) => (
+              <Chip key={i} label={`${getHighlightEmoji(h)} ${h}`} size="small" sx={highlightChipSx} />
+            ))}
+          </Box>
           <Typography variant="subtitle2" color="primary" sx={{ mb: 0.5, fontWeight: 700 }}>
             {t('modal.description')}
           </Typography>
@@ -472,12 +509,10 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
           <Box
             sx={{
               flex: 1,
-              minWidth: '260px',
+              minWidth: { xs: '100%', sm: '260px' },
               p: 2,
               borderRadius: 2,
-              background: theme.palette.mode === 'dark'
-                ? 'rgba(255,255,255,0.04)'
-                : 'rgba(0,0,0,0.03)',
+              background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
             }}
           >
             <Typography variant="subtitle2" color="primary" sx={{ mb: 1, fontWeight: 700 }}>
@@ -504,16 +539,12 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
           <Box
             sx={{
               flex: 1,
-              minWidth: '260px',
+              minWidth: { xs: '100%', sm: '260px' },
               p: 2,
               borderRadius: 2,
               border: '1px solid',
-              borderColor: theme.palette.mode === 'dark'
-                ? 'rgba(239,68,68,0.25)'
-                : 'rgba(239,68,68,0.2)',
-              background: theme.palette.mode === 'dark'
-                ? 'rgba(239,68,68,0.06)'
-                : 'rgba(239,68,68,0.04)',
+              borderColor: isDark ? 'rgba(239,68,68,0.25)' : 'rgba(239,68,68,0.2)',
+              background: isDark ? 'rgba(239,68,68,0.06)' : 'rgba(239,68,68,0.04)',
             }}
           >
             <Typography
@@ -540,14 +571,15 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
           </Box>
 
         </Box>
-        <Divider sx={{ my: 3 }} />
+        <Divider sx={{ my: 3, borderColor: 'divider' }} />
         <Box
           sx={{
             mt: 1,
             p: 2.5,
             borderRadius: '16px',
-            border: '1px solid rgba(212,175,55,0.25)',
-            background: 'rgba(212,175,55,0.08)',
+            border: '1px solid',
+            borderColor: isDark ? 'rgba(232,197,71,0.35)' : 'rgba(212,175,55,0.25)',
+            background: isDark ? 'rgba(232,197,71,0.08)' : 'rgba(212,175,55,0.08)',
           }}
         >
           <Typography
@@ -555,7 +587,7 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
               fontWeight: 700,
               fontSize: '0.95rem',
               mb: 1,
-              color: '#0A192F',
+              color: isDark ? theme.palette.text.primary : '#0A192F',
               fontFamily: '"Playfair Display", serif',
             }}
           >
@@ -579,7 +611,15 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
 
           <Box sx={{ mt: 2 }} /> {/* espacio en blanco */}
 
-          <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              flexWrap: 'wrap',
+              gap: 2,
+              '& .MuiButton-root': { minWidth: 0, flex: { xs: '1 1 100%', sm: '0 1 auto' } },
+            }}
+          >
             <Button
               variant="contained"
               color="primary"
@@ -587,18 +627,14 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
               href={waHref}
               target="_blank"
               rel="noopener noreferrer"
-           >
+            >
               {t('card.bookWhatsappDetail')}
-          </Button>
+            </Button>
 
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => setOpen(false)}
-          >
-            {t('modal.close')}
-          </Button>
-        </Box>
+            <Button variant="outlined" color="primary" onClick={() => setOpen(false)}>
+              {t('modal.close')}
+            </Button>
+          </Box>
 
           <Box sx={{ mt: 2 }} /> {/* espacio en blanco */}
         </Box> {/* 👈 🔥 CIERRA EL BOX CON PADDING */}
@@ -606,4 +642,4 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
       </Dialog>
     </>
   );
-}
+});

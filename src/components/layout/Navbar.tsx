@@ -61,6 +61,24 @@ export default function Navbar() {
   const isHome = pathname === '/';
 
   useEffect(() => {
+    const paths = ['/cartagena', '/bogota', '/medellin', '/contacto'];
+    const run = () => paths.forEach((p) => router.prefetch(p));
+    let idleId: number | undefined;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    if (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(run, { timeout: 2800 });
+    } else {
+      timeoutId = setTimeout(run, 450);
+    }
+    return () => {
+      if (idleId !== undefined && typeof window !== 'undefined' && typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+    };
+  }, [router]);
+
+  useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -428,24 +446,38 @@ export default function Navbar() {
         <List>
           {navItems.map((item) => (
             <ListItem key={item.labelKey} disablePadding>
-              <ListItemButton
-                component={item.external ? 'div' : Link}
-                href={item.external ? undefined : item.href}
-                prefetch={item.external ? undefined : true}
-                scroll={false}
-                onClick={() => {
-                  if (item.external) goTo(item.href, true);
-                  else setMobileOpen(false);
-                }}
-                sx={{ py: 2, px: 3 }}
-              >
-                <ListItemText
-                  primary={t(item.labelKey)}
-                  slotProps={{
-                    primary: { sx: { fontWeight: 500, fontSize: '1.05rem', lineHeight: 1.35 } },
+              {item.external ? (
+                <ListItemButton
+                  onClick={() => {
+                    goTo(item.href, true);
+                    setMobileOpen(false);
                   }}
-                />
-              </ListItemButton>
+                  sx={{ py: 2, px: 3 }}
+                >
+                  <ListItemText
+                    primary={t(item.labelKey)}
+                    slotProps={{
+                      primary: { sx: { fontWeight: 500, fontSize: '1.05rem', lineHeight: 1.35 } },
+                    }}
+                  />
+                </ListItemButton>
+              ) : (
+                <ListItemButton
+                  component={Link}
+                  href={item.href}
+                  prefetch
+                  scroll={false}
+                  onClick={() => setMobileOpen(false)}
+                  sx={{ py: 2, px: 3 }}
+                >
+                  <ListItemText
+                    primary={t(item.labelKey)}
+                    slotProps={{
+                      primary: { sx: { fontWeight: 500, fontSize: '1.05rem', lineHeight: 1.35 } },
+                    }}
+                  />
+                </ListItemButton>
+              )}
             </ListItem>
           ))}
         </List>

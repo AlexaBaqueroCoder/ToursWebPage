@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { Box, Container, Typography, Tabs, Tab, Grid, Chip, Button } from '@mui/material';
 import Image from 'next/image';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -10,13 +11,20 @@ import Footer from '@/components/layout/Footer';
 import ExperienceCard from '@/components/ui/ExperienceCard';
 import HeroSection from '@/components/sections/HeroSection';
 import PromoBanner from '@/components/sections/PromoBanner';
-import TestimonialsSection from '@/components/sections/TestimonialsSection';
-import TripBuilderSection from '@/components/sections/TripBuilderSection';
-import FAQSection from '@/components/sections/FAQSection';
-import ContactTeaserSection from '@/components/sections/ContactTeaserSection';
-import GallerySection from '@/components/sections/GallerySection';
 import ScrollToTop from '@/components/ui/ScrollToTop';
 import { getCityConfig, type CityCategory } from '@/data/cities';
+
+const GallerySection = dynamic(() => import('@/components/sections/GallerySection').then((m) => m.default));
+const TripBuilderSection = dynamic(() =>
+  import('@/components/sections/TripBuilderSection').then((m) => m.default),
+);
+const TestimonialsSection = dynamic(() =>
+  import('@/components/sections/TestimonialsSection').then((m) => m.default),
+);
+const FAQSection = dynamic(() => import('@/components/sections/FAQSection').then((m) => m.default));
+const ContactTeaserSection = dynamic(() =>
+  import('@/components/sections/ContactTeaserSection').then((m) => m.default),
+);
 
 /** Query param values for Linktree / external deep links (?section=experiences&tab=…). */
 const TAB_QUERY_TO_CATEGORY: Record<string, CityCategory> = {
@@ -124,7 +132,14 @@ export default function CityPageContent() {
         </>
       ) : (
         <Box sx={{ position: 'relative', minHeight: { xs: '80vh', md: '100vh' }, display: 'flex', alignItems: 'center' }}>
-          <Image src={city.heroImage} alt={city.name} fill priority style={{ objectFit: 'cover' }} />
+          <Image
+            src={city.heroImage}
+            alt={city.name}
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectFit: 'cover' }}
+          />
           <Box
             sx={{
               position: 'absolute',

@@ -24,11 +24,18 @@ export default function HomeFeaturedExperiencesSection() {
           Seleccion curada entre Cartagena, Bogota y Medellin.
         </Typography>
         <Grid container spacing={3.5}>
-          {featuredExperiences.map((item) => (
+          {featuredExperiences.map((item, i) => (
             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item.title}>
               <Card sx={{ height: '100%', borderRadius: 3, overflow: 'hidden' }}>
                 <Box sx={{ position: 'relative', aspectRatio: '16/11' }}>
-                  <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} />
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    priority={i < 3}
+                    sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    style={{ objectFit: 'cover' }}
+                  />
                 </Box>
                 <CardContent>
                   <Typography variant="h6" sx={{ fontWeight: 700 }}>

@@ -52,7 +52,7 @@ export default function PromoBanner() {
                 gap: 1,
                 flexShrink: 0,
                 pr: { xs: 0, sm: 1 },
-                borderRight: { sm: '1px solid rgba(232,197,71,0.35)' },
+                borderRight: { sm: '1px solid rgba(255,255,255,0.45)' },
               }}
             >
               <LocalOffer sx={{ color: '#e8c547', fontSize: 22 }} />
@@ -112,7 +112,7 @@ export default function PromoBanner() {
                       fontFamily: 'var(--font-urbanist), "Urbanist", sans-serif',
                       pl: 1.5,
                       borderLeft: '2px solid',
-                      borderColor: idx % 2 === 0 ? '#e8c547' : '#22c55e',
+                      borderColor: 'rgba(255,255,255,0.55)',
                     }}
                   >
                     {label}

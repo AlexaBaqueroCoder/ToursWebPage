@@ -781,12 +781,11 @@ Me interesa conocer más sobre esta experiencia en Cartagena 🌴
 📍 Experiencia: ${tourName}
 💰 Precio: ${price}
 
-¿Está disponible para esta fecha? 🙌
-
-Será un placer ayudarte a organizar tu experiencia ✨
- Para brindarte la mejor atención, ¿podrías compartirnos lo siguiente?
+Para brindarte la mejor atención, ¿podrías compartirnos lo siguiente?
 📅 *Fecha del tour:*
 👥 *Número de personas:*
 
-(Si tienes alguna preferencia especial puedes comentarla 😊)`;
+(Si tienes alguna preferencia especial puedes comentarla 😊)
+
+Para nosotros será un placer ayudarte a organizar tu experiencia ✨`;
 }
