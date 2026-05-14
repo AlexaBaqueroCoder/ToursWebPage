@@ -166,7 +166,7 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
                   height: 26,
                   background:
                     experience.tag === 'Premium'
-                      ? 'linear-gradient(135deg, #c9a227, #f0d56e)'
+                      ? 'linear-gradient(135deg,rgb(204, 194, 161), #f0d56e)'
                       : experience.tag === 'Nocturno'
                         ? 'linear-gradient(135deg, #6366F1, #8B5CF6)'
                         : experience.tag === 'Mas Popular'
@@ -303,32 +303,106 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
-        maxWidth="sm"
+        maxWidth={false}
         fullWidth
-        scroll="paper"
         slotProps={{
           paper: {
-            sx: { borderRadius: 3 },
+            sx: {
+              borderRadius: 1,
+              width: '75%',
+              maxWidth: '1200px',
+              overflow: 'hidden', // 👈 importante para el header
+            },
           },
         }}
       >
-        <DialogTitle sx={{ pr: 6,  textAlign: 'center', fontWeight: 700,}}>
-          <Typography variant="h5" sx={{ fontWeight: 700 }}>
-            {experience.title}
-          </Typography>
+        <DialogContent 
+          sx={{
+            p: 0,
+            '&.MuiDialogContent-root': {
+            padding: 0, // 👈 🔥 fuerza real
+            },
+          }}
+        >
+        <Box
+          sx={{
+            position: 'relative',
+            height: 260,
+            width: '100%', // 👈 expande al ancho real
+            overflow: 'hidden',
+            borderTopLeftRadius: '20px',
+            borderTopRightRadius: '20px',
+            lineHeight: 0,
+          }}
+        >
+          <Image
+            src={experience.image}
+            alt={experience.title}
+            fill
+            style={{ objectFit: 'cover' }}
+          />
+
+          {/* OVERLAY OSCURO */}
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to top, rgba(0,0,0,0.88) 5%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.05) 100%)',
+            }}
+          />
+
+          {/* TEXTO ENCIMA */}
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              width: '100%',
+              px: 4,      // 👈 padding horizontal
+              pb: 4,    // 👈 padding abajo
+              color: '#fff',
+              zIndex: 2,
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{ fontSize: '0.72rem',
+                fontWeight: 900,
+                letterSpacing: '0.22em',
+                opacity: 0.8, 
+                textTransform: 'uppercase',
+                color: '#F4D03F',
+                mb: 1, 
+              }}
+            >
+               {experience.category}
+            </Typography>
+
+            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+              {experience.title}
+            </Typography>
+          </Box>
+
+          {/* BOTÓN CERRAR */}
           <IconButton
-            aria-label={t('modal.close')}
             onClick={() => setOpen(false)}
-            sx={{ position: 'absolute', right: 8, top: 8 }}
+            sx={{
+              position: 'absolute',
+              top: 12,
+              right: 12,
+              background: 'rgba(0,0,0,0.4)',
+              color: '#fff',
+              backdropFilter: 'blur(6px)',
+              '&:hover': {
+                background: 'rgba(0,0,0,0.6)',
+              },
+            }}
           >
             <Close />
           </IconButton>
-        </DialogTitle>
-        <DialogContent dividers sx={{ pt: 1 }}>
-          <Box sx={{ position: 'relative', width: '100%', aspectRatio: '16/9', borderRadius: 2, overflow: 'hidden', mb: 2 }}>
-            <Image src={experience.image} alt={experience.title} fill style={{ objectFit: 'cover' }} />
-          </Box>
 
+        </Box>
+        <Box sx={{ p: 2 }}> {/* 👈 🔥 AGREGA ESTE BOX */}
           <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
               <FlightTakeoff sx={{ fontSize: 18, color: 'primary.main' }} />
@@ -342,6 +416,7 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
                 {experience.returnTime}
               </Typography>
             </Box>
+            
             {experience.priceFrom && (
               <Chip
                 icon={<AccessTime sx={{ fontSize: 16 }} />}
@@ -352,56 +427,71 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
               />
             )}
           </Box>
+          {experience.priceFrom && (
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                mt: 1,
+                mb: 2,
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: '1.4rem',
+                  fontWeight: 800,
+                  color: '#0A192F',
+                  lineHeight: 1.1,
+                }}
+              >
+                PRECIO {formatPrice(experience.priceFrom)}
+              </Typography>
 
+              <Typography
+                sx={{
+                  fontSize: '0.92rem',
+                  color: '#16A34A',
+                  fontWeight: 600,
+                  mt: 0.4,
+                }}
+              >
+              Plancton nocturno: {formatPrice(experience.priceFrom + 30000)}
+              </Typography>
+            </Box>
+          )}
           <Typography variant="subtitle2" color="primary" sx={{ mb: 0.5, fontWeight: 700 }}>
             {t('modal.description')}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2, lineHeight: 1.75 }}>
             {experience.description}
           </Typography>
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 2 }}>
 
-          <Typography variant="subtitle2" color="primary" sx={{ mb: 1, fontWeight: 700 }}>
-            {t('modal.includes')}
-          </Typography>
+          {/* INCLUDES */}
           <Box
             sx={{
+              flex: 1,
+              minWidth: '260px',
               p: 2,
               borderRadius: 2,
-              mb: 2,
-              background: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+              background: theme.palette.mode === 'dark'
+                ? 'rgba(255,255,255,0.04)'
+                : 'rgba(0,0,0,0.03)',
             }}
           >
-            {experience.includes.map((item, i) => (
-              <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, mb: 0.8 }}>
-                <CheckCircle sx={{ fontSize: 18, color: 'success.main', mt: 0.15, flexShrink: 0 }} />
-                <Typography variant="body2" color="text.secondary">
-                  {item}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
+            <Typography variant="subtitle2" color="primary" sx={{ mb: 1, fontWeight: 700 }}>
+              {t('modal.includes')}
+            </Typography>
 
-          <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 700, color: 'error.light' }}>
-            {t('modal.notIncludes')}
-          </Typography>
-          <Box
-            sx={{
-              p: 2,
-              borderRadius: 2,
-              mb: 2,
-              border: '1px solid',
-              borderColor: theme.palette.mode === 'dark' ? 'rgba(239,68,68,0.25)' : 'rgba(239,68,68,0.2)',
-              background: theme.palette.mode === 'dark' ? 'rgba(239,68,68,0.06)' : 'rgba(239,68,68,0.04)',
-            }}
-          >
-            {notIncludes.length === 0 ? (
+            {experience.includes.length === 0 ? (
               <Typography variant="body2" color="text.secondary">
                 —
               </Typography>
             ) : (
-              notIncludes.map((item, i) => (
+              experience.includes.map((item, i) => (
                 <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, mb: 0.8 }}>
-                  <CancelOutlined sx={{ fontSize: 18, color: 'error.main', mt: 0.15, flexShrink: 0 }} />
+                  <CheckCircle sx={{ fontSize: 18, color: 'success.main', mt: 0.15 }} />
                   <Typography variant="body2" color="text.secondary">
                     {item}
                   </Typography>
@@ -410,17 +500,80 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
             )}
           </Box>
 
-          <Divider sx={{ my: 2 }} />
-
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 2 }}>
-            <Gavel sx={{ fontSize: 20, color: 'secondary.main' }} />
-            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-              {t('modal.cancellation')}
+          {/* NOT INCLUDES */}
+          <Box
+            sx={{
+              flex: 1,
+              minWidth: '260px',
+              p: 2,
+              borderRadius: 2,
+              border: '1px solid',
+              borderColor: theme.palette.mode === 'dark'
+                ? 'rgba(239,68,68,0.25)'
+                : 'rgba(239,68,68,0.2)',
+              background: theme.palette.mode === 'dark'
+                ? 'rgba(239,68,68,0.06)'
+                : 'rgba(239,68,68,0.04)',
+            }}
+          >
+            <Typography
+              variant="subtitle2"
+              sx={{ mb: 1, fontWeight: 700, color: 'error.light' }}
+            >
+              {t('modal.notIncludes')}
             </Typography>
+
+            {notIncludes.length === 0 ? (
+              <Typography variant="body2" color="text.secondary">
+                —
+              </Typography>
+            ) : (
+              notIncludes.map((item, i) => (
+                <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, mb: 0.8 }}>
+                  <CancelOutlined sx={{ fontSize: 18, color: 'error.main', mt: 0.15 }} />
+                  <Typography variant="body2" color="text.secondary">
+                    {item}
+                  </Typography>
+                </Box>
+              ))
+            )}
           </Box>
-          <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.75 }}>
+
+        </Box>
+        <Divider sx={{ my: 3 }} />
+        <Box
+          sx={{
+            mt: 1,
+            p: 2.5,
+            borderRadius: '16px',
+            border: '1px solid rgba(212,175,55,0.25)',
+            background: 'rgba(212,175,55,0.08)',
+          }}
+        >
+          <Typography
+            sx={{
+              fontWeight: 700,
+              fontSize: '0.95rem',
+              mb: 1,
+              color: '#0A192F',
+              fontFamily: '"Playfair Display", serif',
+            }}
+          >
+          <Gavel sx={{ fontSize: 20, color: 'secondary.main' }} />
+            {t('modal.cancellation')}
+          </Typography>
+
+          <Typography
+            variant="body2"
+            sx={{
+              lineHeight: 1.8,
+              color: 'text.secondary',
+              fontSize: '0.92rem',
+            }}
+          >
             {cancellationText}
           </Typography>
+        </Box>
 
           <Box sx={{ mt: 2 }} /> {/* espacio en blanco */}
 
@@ -448,6 +601,7 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
         </Box>
 
           <Box sx={{ mt: 2 }} /> {/* espacio en blanco */}
+        </Box> {/* 👈 🔥 CIERRA EL BOX CON PADDING */}
         </DialogContent>
       </Dialog>
     </>
