@@ -99,6 +99,8 @@ const cartagenaTours: (Experience & { city: CitySlug; cityCategory: CityCategory
         notIncludes: [
           'Assurance médicale obligatoire 8 800 COP par personne',
           'Dépenses non spécifiées',
+          'Entrée à l’Océanarium (si cette activité est sélectionnée)',
+          'Plancton bioluminescent (coût supplémentaire de 30 000 COP)',
         ],
       }
     },
@@ -124,16 +126,16 @@ const cartagenaTours: (Experience & { city: CitySlug; cityCategory: CityCategory
       'Recorrido en botes deportivos (18 a 30 personas)',
       'Parada panoramica en Fuerte de Bocachica',
       'Recorrido panoramico por Islas del Rosario',
-      'Snorkel incluido o visita al oceanario',
+      'Snorkel incl uido o visita al oceanario',
       'Fiesta en Cholon',
       'Avistamiento avioneta sumergida de Pablo Escobar',
       'Sillas en Agua Azul y sunset en Playa Tranquila',
-      'Plancton bioluminiscente (si aplica)',
+      'Experiencia Plancton bioluminiscente (si aplica)',
       'Degustacion coctel de camaron',
       'Almuerzo en Isla Grande (pescado, pechuga o vegetariano) acompanado de arroz con coco, patacones y ensalada y snack si elige plancton',
       'Impuesto portuario incluido',
     ],
-    notIncludes: ['Seguro medico obligatorio 8.800 por persona', 'Gastos no especificados'],
+    notIncludes: ['Seguro medico obligatorio 8.800 por persona', 'Gastos no especificados', 'Plancton bioluminiscente (valor adicional $30.000 COP)'],
     locales: {
       en: {
         title: '5 Islands Experience',
@@ -154,7 +156,7 @@ const cartagenaTours: (Experience & { city: CitySlug; cityCategory: CityCategory
           'Lunch on Isla Grande (fish, chicken breast, or vegetarian), served with coconut rice, fried plantains, and salad, plus a snack if you choose the plankton experience.',
           'Port tax included',
         ],
-        notIncludes: ['Mandatory medical insurance 8,800 COP per person', 'Unspecified expenses'],
+        notIncludes: ['Mandatory medical insurance 8,800 COP per person', 'Unspecified expenses','Bioluminescent plankton (additional cost of $30,000 COP)'],
       },
       fr: {
         title: 'Expérience 5 Îles',
@@ -178,6 +180,8 @@ const cartagenaTours: (Experience & { city: CitySlug; cityCategory: CityCategory
         notIncludes: [
           "Assurance médicale obligatoire 8 800 COP par personne",
           "Dépenses non spécifiées",
+          "Plancton bioluminescent (coût supplémentaire de 30 000 COP)",
+
         ],
       }
     },
@@ -189,7 +193,7 @@ const cartagenaTours: (Experience & { city: CitySlug; cityCategory: CityCategory
     title: 'Playa Tranquila',
     subtitle: 'Escape a Playa Tranquila',
     description:
-      'SALIDA/DEPARTURE 7:30 am - 8:00 am. RETORNO/RETURN 2:30 pm - 3:00 pm. Precio 145.000 (VIP 170.000). Incluye transporte, coctel de bienvenida, almuerzo tipico y uso de instalaciones.',
+      'El escape perfecto para el relax total. Arena blanca virgen, aguas cálidas y la brisa caribeña. Ideal para familias y parejas que buscan desconectarse del mundo.',
     image: '/images/caribetours/tour-playa-tranquila.jpg',
     category: 'beach',
     departure: '7:30 AM - 8:00 AM',
@@ -198,7 +202,7 @@ const cartagenaTours: (Experience & { city: CitySlug; cityCategory: CityCategory
     currency: 'COP',
     highlights: ['Coctel', 'Almuerzo', 'Playa', 'VIP opcional'],
     includes: ['Transporte terrestre y lancha', 'Coctel de bienvenida', 'Almuerzo tipico', 'Uso de instalaciones'],
-    notIncludes: ['Seguro medico obligatorio 8.800', 'Gastos no especificados'],
+    notIncludes: ['Seguro medico obligatorio 8.800', 'Gastos no especificados','VIP (valor adicional $25.000 COP, incluye uso de instalaciones exclusivas diferentes a las estándar)'],
     locales: {
       en: {
         title: 'Playa Tranquila',

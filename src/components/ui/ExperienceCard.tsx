@@ -38,9 +38,10 @@ import Star from '@mui/icons-material/Star';
 interface ExperienceCardProps {
   experience: Experience;
   index: number;
+  cartagenaStyle?: boolean;
 }
 
-export default function ExperienceCard({ experience: rawExperience, index }: ExperienceCardProps) {
+export default function ExperienceCard({ experience: rawExperience, index,cartagenaStyle }: ExperienceCardProps) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const { locale, t } = useLanguage();
@@ -456,7 +457,6 @@ export default function ExperienceCard({ experience: rawExperience, index }: Exp
                   mt: 0.4,
                 }}
               >
-              Plancton nocturno: {formatPrice(experience.priceFrom + 30000)}
               </Typography>
             </Box>
           )}
