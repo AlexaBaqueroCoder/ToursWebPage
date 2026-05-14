@@ -10,6 +10,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogTitle,
   IconButton,
   Divider,
   useTheme,
@@ -40,7 +41,6 @@ interface ExperienceCardProps {
   cartagenaStyle?: boolean;
 }
 
-export default memo(function ExperienceCard({ experience: rawExperience, index,cartagenaStyle }: ExperienceCardProps) {
 export default function ExperienceCard({ experience: rawExperience, index,cartagenaStyle }: ExperienceCardProps) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
@@ -126,7 +126,7 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: Math.min(index * 0.02, 0.1), duration: 0.38, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ delay: index * 0.08, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         <Card
           sx={{
@@ -310,7 +310,7 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
           paper: {
             sx: {
               borderRadius: 1,
-              width: '75%',
+              width: '60%',
               maxWidth: '1200px',
               overflow: 'hidden', // 👈 importante para el header
             },
@@ -540,39 +540,6 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
           </Box>
 
         </Box>
-        <Divider sx={{ my: 3, borderColor: 'divider' }} />
-        <Box
-          sx={{
-            mt: 1,
-            p: 2.5,
-            borderRadius: '16px',
-            border: '1px solid',
-            borderColor: isDark ? 'rgba(232,197,71,0.35)' : 'rgba(212,175,55,0.25)',
-            background: isDark ? 'rgba(232,197,71,0.08)' : 'rgba(212,175,55,0.08)',
-          }}
-        >
-          <Typography
-            sx={{
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              mb: 1,
-              color: isDark ? theme.palette.text.primary : '#0A192F',
-              fontFamily: '"Playfair Display", serif',
-            }}
-          >
-          <Gavel sx={{ fontSize: 20, color: 'secondary.main' }} />
-            {t('modal.cancellation')}
-          </Typography>
-
-          <Typography
-            variant="body2"
-            sx={{
-              lineHeight: 1.8,
-              color: 'text.secondary',
-              fontSize: '0.92rem',
-            }}
-          >
-        </Box>
         <Divider sx={{ my: 3 }} />
         <Box
           sx={{
@@ -639,4 +606,4 @@ export default function ExperienceCard({ experience: rawExperience, index,cartag
       </Dialog>
     </>
   );
-});
+}
