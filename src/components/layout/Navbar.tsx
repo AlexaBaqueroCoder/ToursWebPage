@@ -101,13 +101,9 @@ export default function Navbar() {
         : 'Hola! Me interesa conocer mas sobre las experiencias en Cartagena. Podrian darme informacion?';
 
   const onHero = !scrolled;
-  const navMuted = scrolled ? theme.palette.text.primary : '#FFFFFF';
-  const navHoverBg =
-    scrolled && mode === 'dark'
-      ? 'rgba(255,255,255,0.1)'
-      : scrolled
-        ? 'rgba(0,0,0,0.07)'
-        : 'rgba(255,255,255,0.14)';
+  /** Header stays dark navy in all themes — foreground always light on bar. */
+  const navMuted = 'rgba(255,255,255,0.92)';
+  const navHoverBg = scrolled ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.14)';
 
   const navLinkSx = {
     color: scrolled ? 'rgba(217, 202, 170, 0.86)' : 'rgba(245, 231, 201, 0.86)',
@@ -142,16 +138,10 @@ export default function Navbar() {
         elevation={0}
         sx={{
           pt: 'max(0px, env(safe-area-inset-top))',
-          background: scrolled
-            ? mode === 'dark'
-              ? 'rgba(18, 22, 28, 0.96)'
-              : 'rgba(253, 252, 249, 0.98)'
-            : 'rgba(10, 14, 20, 0.86)',
+          background: scrolled ? 'rgba(10, 14, 20, 0.97)' : 'rgba(10, 14, 20, 0.88)',
           backdropFilter: 'blur(18px) saturate(150%)',
           WebkitBackdropFilter: 'blur(18px) saturate(150%)',
-          borderBottom: scrolled
-            ? `1px solid ${mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`
-            : '1px solid rgba(255,255,255,0.1)',
+          borderBottom: '1px solid rgba(255,255,255,0.1)',
           boxShadow: onHero ? '0 4px 24px rgba(0,0,0,0.2)' : 'none',
           transition: 'background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease',
           zIndex: 1300,
@@ -213,8 +203,8 @@ export default function Navbar() {
                     fontWeight: 700,
                     fontSize: { xs: '1.2rem', md: '1.35rem' },
                     letterSpacing: '-0.02em',
-                    color: onHero ? '#FFFFFF' : theme.palette.text.primary,
-                    textShadow: onHero ? '0 2px 16px rgba(0,0,0,0.45)' : 'none',
+                    color: '#FFFFFF',
+                    textShadow: onHero ? '0 2px 16px rgba(0,0,0,0.45)' : '0 1px 8px rgba(0,0,0,0.35)',
                   }}
                 >
                   Cartagena
@@ -253,11 +243,24 @@ export default function Navbar() {
                 '&::-webkit-scrollbar': { display: 'none' },
               }}
             >
-              {navItems.map((item) => (
-                <Button key={item.labelKey} onClick={() => goTo(item.href, item.external)} sx={navLinkSx}>
-                  {t(item.labelKey)}
-                </Button>
-              ))}
+              {navItems.map((item) =>
+                item.external ? (
+                  <Button key={item.labelKey} onClick={() => goTo(item.href, item.external)} sx={navLinkSx}>
+                    {t(item.labelKey)}
+                  </Button>
+                ) : (
+                  <Button
+                    key={item.labelKey}
+                    component={Link}
+                    href={item.href}
+                    prefetch
+                    scroll={false}
+                    sx={navLinkSx}
+                  >
+                    {t(item.labelKey)}
+                  </Button>
+                ),
+              )}
             </Box>
 
             {/* Acciones derecha */}
@@ -285,11 +288,9 @@ export default function Navbar() {
                     fontSize: '0.8125rem',
                     fontWeight: 700,
                     color: navMuted,
-                    borderColor: onHero ? 'rgba(255,255,255,0.25)' : theme.palette.divider,
+                    borderColor: 'rgba(255,255,255,0.28)',
                     '&.Mui-selected': {
-                      backgroundColor: onHero
-                        ? 'rgba(255,255,255,0.2)'
-                        : theme.palette.action.selected,
+                      backgroundColor: 'rgba(255,255,255,0.22)',
                       color: navMuted,
                     },
                   },
@@ -306,7 +307,7 @@ export default function Navbar() {
                 sx={{
                   color: navMuted,
                   border: '1px solid',
-                  borderColor: onHero ? 'rgba(255,255,255,0.35)' : 'divider',
+                  borderColor: 'rgba(255,255,255,0.35)',
                   borderRadius: 2,
                 }}
               >
@@ -372,7 +373,7 @@ export default function Navbar() {
                     fontSize: '0.7rem',
                     fontWeight: 700,
                     color: navMuted,
-                    borderColor: onHero ? 'rgba(255,255,255,0.4)' : theme.palette.divider,
+                    borderColor: 'rgba(255,255,255,0.35)',
                   },
                 }}
               >
@@ -425,14 +426,17 @@ export default function Navbar() {
           </IconButton>
         </Box>
         <List>
-          {navItems.map((item, i) => (
+          {navItems.map((item) => (
             <ListItem key={item.labelKey} disablePadding>
               <ListItemButton
-                onClick={() => goTo(item.href, item.external)}
-                component={motion.div}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.06 }}
+                component={item.external ? 'div' : Link}
+                href={item.external ? undefined : item.href}
+                prefetch={item.external ? undefined : true}
+                scroll={false}
+                onClick={() => {
+                  if (item.external) goTo(item.href, true);
+                  else setMobileOpen(false);
+                }}
                 sx={{ py: 2, px: 3 }}
               >
                 <ListItemText
